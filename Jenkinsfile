@@ -44,7 +44,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'tfplan.txt'
+            sh 'echo Done'
         }
     }
 }
