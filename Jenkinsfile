@@ -10,11 +10,9 @@ pipeline {
     stages {
         stage('Plan') {
             steps {
-                script {
-                    currentBuild.displayName = "Plan-${version}"
-                }
-                sh 'terraform init -input=false'
-                sh "terraform plan -input=false -out tfplan"
+                sh 'terraform version'
+                sh 'terraform init'
+                sh "terraform plan -out tfplan"
                 sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
@@ -37,7 +35,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "terraform apply -input=false tfplan"
+                sh "terraform apply tfplan"
             }
         }
     }
