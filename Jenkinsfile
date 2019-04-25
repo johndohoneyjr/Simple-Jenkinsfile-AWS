@@ -22,7 +22,7 @@ pipeline {
       steps {
         sh '''
           echo "Archiving git directory."
-          tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
+          tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
         '''
       }
     }
