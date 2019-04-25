@@ -31,6 +31,8 @@ environment {
         stage('init') {
             steps {
                 sh  """
+                    pwd
+                    ls -la
                     ${TERRAFORM_CMD} init 
                     """
             }
@@ -38,6 +40,8 @@ environment {
         stage('plan') {
             steps {
                 sh  """
+                    pwd
+                    ls -la
                     ${TERRAFORM_CMD} plan -state=tfplan 
                     """
                 script {
