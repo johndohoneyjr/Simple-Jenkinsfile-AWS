@@ -23,7 +23,7 @@ pipeline {
         steps {
             sh 'rm -rf $ARTIFACTPATH'
             sh 'mkdir -p $ARTIFACTPATH'
-            sh 'tar czf $ARTIFACTPATH/$OUTPUT --exclude $ARTIFACTPATH --exclude .git .'
+            sh 'tar czf $ARTIFACTPATH/$OUTPUT --exclude $ARTIFACTPATH --exclude Jenkinsfile --exclude .git .'
             }
         }
     stage('build-tarball') {
