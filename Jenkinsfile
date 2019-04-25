@@ -9,7 +9,7 @@ pipeline {
        address          = "app.terraform.io"
        organization     = "johndohoneyjr"
        workspace        = "test-api"
-       workspace-id     = "ws-wLCcZ16gZJoy6is3"
+       workspaceId      = "ws-wLCcZ16gZJoy6is3"
        ARTIFACTPATH     = "output"
        OUTPUT           = "bundle.tar.gz"
   }
@@ -43,10 +43,10 @@ pipeline {
         }
         steps {
            sh '''
-            echo "Workspace ID: " $workspace_id
+            echo "Workspace ID: " $workspaceId
             echo "Creating configuration version."
             echo '{"data":{"type":"configuration-version"}}' > ./configversion.json
-            configuration_version_result=$(curl --header "Authorization: Bearer $ATLAS_TOKEN" --header "Content-Type: application/vnd.api+json" --data @configversion.json "https://${address}/api/v2/workspaces/${workspace_id}/configuration-versions")
+            configuration_version_result=$(curl --header "Authorization: Bearer $ATLAS_TOKEN" --header "Content-Type: application/vnd.api+json" --data @configversion.json "https://${address}/api/v2/workspaces/${workspaceId}/configuration-versions")
 
             config_version_id=$(echo $configuration_version_result | python -c "import sys, json; print(json.load(sys.stdin)['data']['id'])")
             upload_url=$(echo $configuration_version_result | python -c "import sys, json; print(json.load(sys.stdin)['data']['attributes']['upload-url'])")
