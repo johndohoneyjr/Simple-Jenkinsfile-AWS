@@ -15,13 +15,7 @@ pipeline {
          pwd
          ls -la
          echo "Tarring configuration directory."
-         //UPLOAD_FILE_NAME="./content-$(date +%s).tar.gz"
-         //tar cvzf "${UPLOAD_FILE_NAME}" -C /root .
          ls -l /root
-         //curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
-         //-H "Authorization: Bearer ${ATLAS_TOKEN}" \
-         //-H "Content-Type: application/vnd.api+json"
-         
         """
       }
     }
