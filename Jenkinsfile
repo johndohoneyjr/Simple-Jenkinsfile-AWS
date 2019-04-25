@@ -12,7 +12,7 @@ pipeline {
     stage('checkout') {
       steps {
         checkout scm
-        echo ${ATLAS_TOKEN}
+        echo "${ATLAS_TOKEN}"
         echo "Tarring configuration directory."
         
         sh 'curl -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
