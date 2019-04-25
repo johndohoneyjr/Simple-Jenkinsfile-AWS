@@ -33,8 +33,7 @@ pipeline {
       steps {
         cd ~
         pwd
-        cd "${HOME}"
-        pwd
+        echo "${HOME}"
         sh 'tar -h '
       }
     }
