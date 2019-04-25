@@ -23,21 +23,23 @@ pipeline {
         sh '''
           echo "Archiving git directory."
           tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
+          cp $HOME/$UPLOAD_FILE_NAME $TMPDIR
+          ls -la $TMPDIR
         '''
       }
     }
-    stage('plan') {
+    stage('Set-Variables') {
       steps {
         sh 'ls -la $HOME'
       }
     }
-    stage('approval') {
+    stage('Start-Run') {
 
       steps {
         sh ' ls -a '
       }
     }
-    stage('apply') {
+    stage('Clean-Up') {
       steps {
         
         cleanWs()
