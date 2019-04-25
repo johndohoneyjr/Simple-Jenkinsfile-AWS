@@ -22,8 +22,8 @@ pipeline {
       steps {
         sh '''
           echo "Archiving git directory."
-          tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
-          cp $HOME/$UPLOAD_FILE_NAME $TMPDIR
+          sudo tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
+          sudo cp $HOME/$UPLOAD_FILE_NAME $TMPDIR
           ls -la $TMPDIR
         '''
       }
