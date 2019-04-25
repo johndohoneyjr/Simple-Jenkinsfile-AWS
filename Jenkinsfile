@@ -7,7 +7,7 @@ pipeline {
   environment {
        ATLAS_TOKEN      = "${env.ATLAS_TOKEN}"
        address          = "app.terraform.io"
-       organization     = "<your_organization>"
+       organization     = "johndohoneyjr"
        workspace        = "workspace-from-api"
   }
   stages {
@@ -35,7 +35,7 @@ pipeline {
       steps {
         sh '''
           echo "Archiving git directory."
-          UPLOAD_FILE_NAME = "./tf-$(date +%s).tar.gz"
+          export UPLOAD_FILE_NAME = "./tf-$(date +%s).tar.gz"
           tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
           ls $JENKINS_HOME
         '''
