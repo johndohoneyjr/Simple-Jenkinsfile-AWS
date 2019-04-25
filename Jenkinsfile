@@ -10,14 +10,17 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        checkout scm
+        //checkout scm
         sh  """
          pwd
          ls -la
          echo "Tarring configuration directory."
-         curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
-         -H "Authorization: Bearer ${ATLAS_TOKEN}" \
-         -H "Content-Type: application/vnd.api+json"
+         UPLOAD_FILE_NAME="./content-$(date +%s).tar.gz"
+         tar cvzf ${UPLOAD_FILE_NAME" -C /root .
+         ls -l /root
+         //curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
+         //-H "Authorization: Bearer ${ATLAS_TOKEN}" \
+         //-H "Content-Type: application/vnd.api+json"
          
         """
       }
