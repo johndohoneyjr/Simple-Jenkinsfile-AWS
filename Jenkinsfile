@@ -28,9 +28,7 @@ pipeline {
     }
     stage('plan') {
       steps {
-        cd ~
-        pwd
-        echo "${HOME}"
+        sh 'ls -la $HOME'
       }
     }
     stage('approval') {
