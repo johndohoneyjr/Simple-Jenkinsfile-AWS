@@ -4,7 +4,7 @@ node {
     stage 'Checkout'
 
     // // Get some code from a GitHub repository
-    git url: 'git@github.com:myorg/infrastructure.git'
+    // git url: 'git@github.com:myorg/infrastructure.git'
 
     // Get the Terraform tool.
     env.AWS_ACCESS_KEY_ID     = "${env.AWS_ACCESS_KEY_ID}"
