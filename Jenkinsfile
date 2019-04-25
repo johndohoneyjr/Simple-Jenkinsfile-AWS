@@ -9,6 +9,7 @@ pipeline {
        address          = "app.terraform.io"
        organization     = "johndohoneyjr"
        workspace        = "workspace-from-api"
+       UPLOAD_FILE_NAME = "myjob.tar.gz"
   }
   stages {
 
@@ -35,7 +36,6 @@ pipeline {
       steps {
         sh '''
           echo "Archiving git directory."
-          export UPLOAD_FILE_NAME = "./tf-$(date +%s).tar.gz"
           tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
           ls $JENKINS_HOME
         '''
