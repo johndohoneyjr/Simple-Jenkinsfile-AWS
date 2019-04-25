@@ -36,8 +36,9 @@ pipeline {
       steps {
         sh '''
           echo "Archiving git directory."
+          rm $JENKINS_HOME/$UPLOAD_FILE_NAME
           tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
-          ls -la  $JENKINS_HOME/$UPLOAD_FILE_NAME
+          stat  $JENKINS_HOME/$UPLOAD_FILE_NAME
         '''
       }
     }
