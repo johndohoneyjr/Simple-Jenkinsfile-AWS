@@ -10,6 +10,8 @@ pipeline {
        organization     = "johndohoneyjr"
        workspace        = "workspace-from-api"
        UPLOAD_FILE_NAME = "myjob.tar.gz"
+            ARTIFACTPATH = "output"
+        OUTPUT = "bundle.tar.gz"
   }
   stages {
 
@@ -18,6 +20,15 @@ pipeline {
         sh 'ls -lag'
       }
     }
+        stage('Bundle') {
+            steps {
+                // Archive everything to be sent to the server later
+                sh 'rm -rf $ARTIFACTPATH'
+                sh 'mkdir -p $ARTIFACTPATH'
+                // Use `.bundleignore` as a file similar to .gitignore so different components can exclude pieces from being sent to prod
+                sh 'tar czf $ARTIFACTPATH/$OUTPUT --exclude $ARTIFACTPATH  --exclude .git .'
+            }
+        }
     stage('build-tarball') {
       steps {
         sh '''
@@ -25,8 +36,7 @@ pipeline {
           echo "Archiving git directory."
           mkdir /tmp/mytf
           tar cvzf myjob.tar.gz --directory=/tmp/mytf --exclude .git .
-          cp /tmp/mytf/$UPLOAD_FILE_NAME ./$UPLOAD_FILE_NAME
-          ls -lag 
+          ls -lag /tmp/mytf
         '''
       }
     }
