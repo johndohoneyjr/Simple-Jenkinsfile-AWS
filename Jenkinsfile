@@ -21,6 +21,11 @@ environment {
                 sh  """
                     echo "${TERRAFORM_CMD}"
                     ${TERRAFORM_CMD} version
+                    pwd
+                    ls -la
+                    echo HOME
+                    cd ~
+                    ls -la
                     """
             }
         }
