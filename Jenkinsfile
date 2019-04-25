@@ -8,7 +8,8 @@ pipeline {
        ATLAS_TOKEN      = "${env.ATLAS_TOKEN}"
        address          = "app.terraform.io"
        organization     = "johndohoneyjr"
-       workspace        = "workspace-from-api"
+       workspace        = "test-api"
+       workspace-id     = "ws-wLCcZ16gZJoy6is3"
        ARTIFACTPATH     = "output"
        OUTPUT           = "bundle.tar.gz"
   }
@@ -19,7 +20,7 @@ pipeline {
         sh 'ls -lag'
       }
     }
-    stage('Bundle') {
+    stage('Set Variables') {
         steps {
             sh 'rm -rf $ARTIFACTPATH'
             sh 'mkdir -p $ARTIFACTPATH'
@@ -34,15 +35,33 @@ pipeline {
         '''
       }
     }
-    stage('Set-Variables') {
-      steps {
-        sh 'ls -lag $HOME'
-      }
+    stage('Configuration-Version') {
+       agent {
+           docker {
+              image 'python:2-alpine' 
+            }
+        }
+        steps {
+           sh '''
+            echo "Workspace ID: " $workspace_id
+            echo "Creating configuration version."
+            echo '{"data":{"type":"configuration-version"}}' > ./configversion.json
+            configuration_version_result=$(curl --header "Authorization: Bearer $ATLAS_TOKEN" --header "Content-Type: application/vnd.api+json" --data @configversion.json "https://${address}/api/v2/workspaces/${workspace_id}/configuration-versions")
+
+            config_version_id=$(echo $configuration_version_result | python -c "import sys, json; print(json.load(sys.stdin)['data']['id'])")
+            upload_url=$(echo $configuration_version_result | python -c "import sys, json; print(json.load(sys.stdin)['data']['attributes']['upload-url'])")
+            echo "Config Version ID: " $config_version_id
+            echo "Upload URL: " $upload_url
+
+           '''
+        }
     }
     stage('Start-Run') {
 
       steps {
-        sh ' ls -a '
+        sh '''
+         echo "Starting"
+        '''
       }
     }
     stage('Clean-Up') {
