@@ -37,7 +37,7 @@ pipeline {
         sh '''
           echo "Archiving git directory."
           tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
-          ls $JENKINS_HOME
+          ls -la  $JENKINS_HOME/$UPLOAD_FILE_NAME
         '''
       }
     }
