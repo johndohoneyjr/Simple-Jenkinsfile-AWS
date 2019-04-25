@@ -23,9 +23,9 @@ pipeline {
         sh '''
           whoami
           echo "Archiving git directory."
-          tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
-          cp $HOME/$UPLOAD_FILE_NAME $TMPDIR/$UPLOAD_FILE_NAME
-          ls -lag $TMPDIR
+          tar cvzf myjob.tar.gz --directory=.. --exclude .git .
+          cp ./$UPLOAD_FILE_NAME ./$UPLOAD_FILE_NAME
+          ls -lag 
         '''
       }
     }
