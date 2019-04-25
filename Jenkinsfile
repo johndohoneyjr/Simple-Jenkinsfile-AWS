@@ -15,10 +15,10 @@ pipeline {
          pwd
          ls -la
          echo "Tarring configuration directory."
-         foo= curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
+         curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
          -H "Authorization: Bearer ${ATLAS_TOKEN}" \
          -H "Content-Type: application/vnd.api+json"
-         echo $foo
+         
         """
       }
     }
