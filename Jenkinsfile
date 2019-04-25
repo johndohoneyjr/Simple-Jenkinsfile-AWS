@@ -5,44 +5,48 @@ pipeline {
         AWS_ACCESS_KEY_ID     = "${env.AWS_ACCESS_KEY_ID}"
         AWS_SECRET_ACCESS_KEY = "${env.AWS_SECRET_ACCESS_KEY}"
         TF_IN_AUTOMATION      = '1'
+        TERRAFORM_CMD = 'docker run --network host " -w /app -v ${HOME}/.aws:/root/.aws -v ${HOME}/.ssh:/root/.ssh -v `pwd`:/app hashicorp/terraform:light'
+ 
     }
 
-    stages {
-        stage('Plan') {
+stages {
+        stage('checkout repo') {
             steps {
-                sh 'terraform version'
-                sh 'terraform init'
-                sh "terraform plan -out tfplan"
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+              checkout scm
             }
         }
-
-        stage('Approval') {
-            when {
-                not {
-                    equals expected: true, actual: params.autoApprove
-                }
-            }
-
+        stage('pull latest light terraform image') {
             steps {
+                sh  """
+                    docker pull hashicorp/terraform:light
+                    """
+            }
+        }
+        stage('init') {
+            steps {
+                sh  """
+                    ${TERRAFORM_CMD} init -backend=true -input=false
+                    """
+            }
+        }
+        stage('plan') {
+            steps {{
+                sh  """
+                    ${TERRAFORM_CMD} plan -out=tfplan -input=false 
+                    """
                 script {
-                    def plan = readFile 'tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                  timeout(time: 10, unit: 'MINUTES') {
+                    input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
+                  }
                 }
             }
         }
-
-        stage('Apply') {
+        stage('apply') {
             steps {
-                sh "terraform apply tfplan"
+                sh  """
+                    ${TERRAFORM_CMD} apply -lock=false -input=false tfplan
+                    """
             }
-        }
-    }
-
-    post {
-        always {
-            sh 'echo Done'
         }
     }
 }
