@@ -12,13 +12,41 @@ pipeline {
     stage('checkout') {
       steps {
         checkout scm
-        sh  """
-         pwd
-         ls -la
 
-         echo "Tarring configuration directory."
-         ls -l /root
-        """
+    sh 'touch test.txt'
+
+    sh 'ls ../../../../../'
+
+
+    sh 'ls /'
+
+
+    sh 'ls $HOME'
+
+
+    sh 'ls $JENKINS_HOME'
+
+'
+    sh 'ls $TMPDIR'
+
+
+    sh '''
+        echo $(pwd)
+        ls .
+        ls $(pwd)
+        '''
+
+
+    def out='$(pwd)/download/maven.tgz'
+    sh 'mkdir -p ./download'
+    sh 'curl -L http://ftp.cixug.es/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz -o ' + out
+
+
+    def newName = 'mvn.tgz'
+    sh 'mkdir -p $(pwd)/other'
+    sh 'mv ' + out + ' ' + newName
+    sh 'cp ' + newName + ' ' + out
+
       }
     }
     stage('init') {
