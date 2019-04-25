@@ -8,9 +8,7 @@ pipeline {
         ATLAS_TOKEN     = "${env.ATLAS_TOKEN}"
   }
   stages {
-    tempDir('/tmp/jobDir') {
-    // your steps here
-    } 
+
     stage('checkout') {
       steps {
         checkout scm
@@ -28,6 +26,9 @@ pipeline {
         sh 'curl --silent -X GET https://app.terraform.io/api/v2/organizations \
          -H "Authorization: Bearer 0rP1AGPSCxm5sg.atlasv1.V2NqUbFryMnCsopae1vW8BnzKiMYQFRywE4xmswXplQKoAzzQMozHcgoKr5CitDyMVs" \
          -H "Content-Type: application/vnd.api+json"' 
+            tempDir('/tmp/jobDir') {
+               // your steps here
+             } 
       }
     }
     stage('plan') {
