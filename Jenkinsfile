@@ -15,29 +15,14 @@ pipeline {
 
     stage('checkout') {
       steps {
-        checkout scm
-
-    sh 'touch test.txt'
-    sh 'ls ../../../../../'
-    sh 'ls /'
-    sh 'ls $HOME'
-    sh 'ls $JENKINS_HOME'
-    sh 'ls $TMPDIR'
-    sh '''
-        echo $ATLAS_TOKEN
-        echo $(pwd)
-        ls .
-        ls $(pwd)
-        rm test.txt
-     '''
+        sh 'ls'
       }
     }
-    stage('init') {
+    stage('build-tarball') {
       steps {
         sh '''
           echo "Archiving git directory."
           tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
-          stat  $JENKINS_HOME/$UPLOAD_FILE_NAME
         '''
       }
     }
