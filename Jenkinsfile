@@ -29,14 +29,14 @@ environment {
         stage('init') {
             steps {
                 sh  """
-                    ${TERRAFORM_CMD} init -input=false
+                    ${TERRAFORM_CMD} init 
                     """
             }
         }
         stage('plan') {
             steps {
                 sh  """
-                    ${TERRAFORM_CMD} plan -out=tfplan -input=false 
+                    ${TERRAFORM_CMD} plan -state=tfplan 
                     """
                 script {
                   timeout(time: 10, unit: 'MINUTES') {
@@ -48,7 +48,7 @@ environment {
         stage('apply') {
             steps {
                 sh  """
-                    ${TERRAFORM_CMD} apply -input=false tfplan
+                    ${TERRAFORM_CMD} apply -state=tfplan
                     """
            }
         }
