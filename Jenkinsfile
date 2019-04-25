@@ -33,11 +33,12 @@ pipeline {
     }
     stage('init') {
       steps {
-        sh 'printenv | sort'
-        echo "Archiving git directory."
-        UPLOAD_FILE_NAME = "./tf-$(date +%s).tar.gz"
-        tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
-        ls $JENKINS_HOME
+        sh '''
+          echo "Archiving git directory."
+          UPLOAD_FILE_NAME = "./tf-$(date +%s).tar.gz"
+          tar cvzf $UPLOAD_FILE_NAME -C $JENKINS_HOME --exclude .git .
+          ls $JENKINS_HOME
+        '''
       }
     }
     stage('plan') {
