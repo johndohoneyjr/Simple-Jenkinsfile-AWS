@@ -30,7 +30,7 @@ pipeline {
       steps {
         sh '''
           whoami
-          ls -lag $ARTIFACTPATH
+          tar tzvf $ARTIFACTPATH/$OUTPUT
         '''
       }
     }
