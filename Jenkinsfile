@@ -15,9 +15,10 @@ pipeline {
          pwd
          ls -la
          echo "Tarring configuration directory."
-         curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
+         foo= $(curl --silent -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
          -H "Authorization: Bearer ${ATLAS_TOKEN}" \
-         -H "Content-Type: application/vnd.api+json"
+         -H "Content-Type: application/vnd.api+json")
+         echo $foo
         """
       }
     }
@@ -30,6 +31,10 @@ pipeline {
     }
     stage('plan') {
       steps {
+        cd ~
+        pwd
+        cd ${HOME}
+        pwd
         sh 'tar -h '
       }
     }
