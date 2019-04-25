@@ -8,12 +8,16 @@ pipeline {
         ATLAS_TOKEN     = "${env.ATLAS_TOKEN}"
   }
   stages {
+    tempDir('/tmp/jobDir') {
+    // your steps here
+    } 
     stage('checkout') {
       steps {
         checkout scm
         sh  """
          pwd
          ls -la
+
          echo "Tarring configuration directory."
          ls -l /root
         """
