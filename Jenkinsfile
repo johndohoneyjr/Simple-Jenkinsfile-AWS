@@ -5,37 +5,41 @@ pipeline {
     }  
   }
   environment {
-        AWS_ACCESS_KEY_ID     = "${env.AWS_ACCESS_KEY_ID}"
+        ATLAS_TOKEN     = "${env.ATLAS_TOKEN}"
         AWS_SECRET_ACCESS_KEY = "${env.AWS_SECRET_ACCESS_KEY}"
   }
   stages {
     stage('checkout') {
       steps {
         checkout scm
-        sh 'docker pull hashicorp/terraform:light'
+        echo ${ATLAS_TOKEN}
+        echo "Tarring configuration directory."
+        
+        sh 'curl -X GET https://app.terraform.io/api/v2/organizations/johndohoneyjr \
+         -H "Authorization: Bearer ${ATLAS_TOKEN}" \
+         -H "Content-Type: application/vnd.api+json"'
       }
     }
     stage('init') {
       steps {
-        sh 'docker run -w /app -v /root/.aws:/root/.aws -v `pwd`:/app hashicorp/terraform:light init'
+        sh 'curl -X GET https://app.terraform.io/api/v2/organizations \
+         -H "Authorization: Bearer 0rP1AGPSCxm5sg.atlasv1.V2NqUbFryMnCsopae1vW8BnzKiMYQFRywE4xmswXplQKoAzzQMozHcgoKr5CitDyMVs" \
+         -H "Content-Type: application/vnd.api+json"' 
       }
     }
     stage('plan') {
       steps {
-        sh 'docker run -w /app -v /root/.aws:/root/.aws -v `pwd`:/app hashicorp/terraform:light plan'
       }
     }
     stage('approval') {
-      options {
-        timeout(time: 1, unit: 'HOURS') 
-      }
+
       steps {
-        input 'approve the plan to proceed and apply'
+        
       }
     }
     stage('apply') {
       steps {
-        sh 'docker run -w /app -v /root/.aws:/root/.aws -v `pwd`:/app hashicorp/terraform:light apply -auto-approve'
+        
         cleanWs()
       }
     }
