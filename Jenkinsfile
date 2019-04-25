@@ -29,12 +29,13 @@ pipeline {
     }
     stage('plan') {
       steps {
+        sh ' `pwd` '
       }
     }
     stage('approval') {
 
       steps {
-        
+        sh ' tar -h '
       }
     }
     stage('apply') {
