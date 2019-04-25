@@ -20,8 +20,6 @@ environment {
         stage('Check TF Version') {
             steps {
                 sh  """
-                    echo $HOME
-                    ls /app
                     ${TERRAFORM_CMD} version
                     pwd
                     ls -la
