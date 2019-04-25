@@ -15,22 +15,22 @@ pipeline {
 
     stage('checkout') {
       steps {
-        sh 'ls'
+        sh 'ls -lag'
       }
     }
     stage('build-tarball') {
       steps {
         sh '''
           echo "Archiving git directory."
-          sudo tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
-          sudo cp $HOME/$UPLOAD_FILE_NAME $TMPDIR
-          ls -la $TMPDIR
+          tar cvzf $UPLOAD_FILE_NAME -C $HOME --exclude .git .
+          cp $HOME/$UPLOAD_FILE_NAME $TMPDIR
+          ls -lag $TMPDIR
         '''
       }
     }
     stage('Set-Variables') {
       steps {
-        sh 'ls -la $HOME'
+        sh 'ls -lag $HOME'
       }
     }
     stage('Start-Run') {
