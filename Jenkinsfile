@@ -5,9 +5,9 @@ pipeline {
         }
     }
 environment {
-         AWS_ACCESS_KEY_ID     = "${env.AWS_ACCESS_KEY_ID}"
+        AWS_ACCESS_KEY_ID     = "${env.AWS_ACCESS_KEY_ID}"
         AWS_SECRET_ACCESS_KEY = "${env.AWS_SECRET_ACCESS_KEY}"
-        TERRAFORM_CMD = 'docker run --network host -w /app -v ${HOME}/.aws:/root/.aws -v ${HOME}/.ssh:/root/.ssh -v `pwd`:/app hashicorp/terraform:light'
+        TERRAFORM_CMD = 'docker run --network host -w /usr/src/app -v ${HOME}/.aws:/root/.aws -v ${HOME}/.ssh:/root/.ssh -v `pwd`:/usr/src/app hashicorp/terraform:light'
     }
 
     stages {
