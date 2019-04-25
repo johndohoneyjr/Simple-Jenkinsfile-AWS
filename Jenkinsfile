@@ -1,15 +1,15 @@
 pipeline {
-    agent any
-
-    environment {
+    agent {
+        node {
+            label 'master'
+        }
+    }
+environment {
         AWS_ACCESS_KEY_ID     = "${env.AWS_ACCESS_KEY_ID}"
         AWS_SECRET_ACCESS_KEY = "${env.AWS_SECRET_ACCESS_KEY}"
-        TF_IN_AUTOMATION      = '1'
         TERRAFORM_CMD = 'docker run --network host " -w /app -v ${HOME}/.aws:/root/.aws -v ${HOME}/.ssh:/root/.ssh -v `pwd`:/app hashicorp/terraform:light'
- 
     }
-
-stages {
+    stages {
         stage('checkout repo') {
             steps {
               checkout scm
@@ -46,7 +46,7 @@ stages {
                 sh  """
                     ${TERRAFORM_CMD} apply -lock=false -input=false tfplan
                     """
-            }
+           }
         }
     }
 }
