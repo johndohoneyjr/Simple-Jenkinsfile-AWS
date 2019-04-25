@@ -5,7 +5,10 @@ pipeline {
     }  
   }
   environment {
-        ATLAS_TOKEN     = "${env.ATLAS_TOKEN}"
+       ATLAS_TOKEN      = "${env.ATLAS_TOKEN}"
+       address          = "app.terraform.io"
+       organization     = "<your_organization>"
+       workspace        = "workspace-from-api"
   }
   stages {
 
@@ -20,20 +23,20 @@ pipeline {
     sh 'ls $JENKINS_HOME'
     sh 'ls $TMPDIR'
     sh '''
+        echo $ATLAS_TOKEN
         echo $(pwd)
         ls .
         ls $(pwd)
+        rm test.txt
      '''
       }
     }
     stage('init') {
       steps {
-        sh 'curl --silent -X GET https://app.terraform.io/api/v2/organizations \
-         -H "Authorization: Bearer 0rP1AGPSCxm5sg.atlasv1.V2NqUbFryMnCsopae1vW8BnzKiMYQFRywE4xmswXplQKoAzzQMozHcgoKr5CitDyMVs" \
-         -H "Content-Type: application/vnd.api+json"' 
-            tempDir('/tmp/jobDir') {
-               // your steps here
-             } 
+        sh 'printenv | sort'
+        echo "Archiving git directory."
+        tar -czf dohoney.tar.gz -C $JENKINS_HOME --exclude .git .
+        ls $JENKINS_HOME
       }
     }
     stage('plan') {
